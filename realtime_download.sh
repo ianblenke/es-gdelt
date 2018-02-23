@@ -1,0 +1,6 @@
+#!/bin/sh
+export GDELT_REALTIME_FILE_PATH GDELT_REALTIME_GKG_FILE_PATH GDELT_REALTIME_MENTIONS_FILE_PATH ES_HOST ES_USER ES_PASSWORD ES_GDELT_INDEX
+while true; do
+  python gdelt_realtime_downloader.py $@
+  sleep 900
+done

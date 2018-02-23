@@ -1,16 +1,57 @@
 version: '2.1'
 
+volumes:
+
+  gdelt-data:
+    driver: local
+
 services:
 
   gdelt_create_index:
     build: .
-    image: sofwerx/es-delt
+    image: sofwerx/es-gdelt
     container_name: gdelt_create_index
     hostname: gdelt_create_index
     environment:
-      ES_HOST: ES_HOST
+      ES_HOST_URL: ${ES_HOST_URL}
       ES_USER: ${ES_USER}
       ES_PASSWORD: ${ES_PASSWORD}
       ES_DELETE_INDEX: N
     command: python gdelt_create_index.py
+
+  gdelt_realtime_downloader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sofwerx/es-gdelt
+    container_name: gdelt_create_downloaer
+    hostname: gdelt_create_downloader
+    volumes:
+      - gdelt-data:/es-gdelt/data
+    environment:
+      GDELT_HISTORIC_FILE_PATH: ${GDELT_HISTORIC_FILE_PATH}
+      GDELT_REALTIME_FILE_PATH: ${GDELT_REALTIME_FILE_PATH}
+      GDELT_REALTIME_GKG_FILE_PATH: ${GDELT_REALTIME_GKG_FILE_PATH}
+      GDELT_REALTIME_MENTIONS_FILE_PATH: ${GDELT_REALTIME_MENTIONS_FILE_PATH}
+      SLACK_NOTIFICATIONS_ENABLED: ${SLACK_NOTIFICATIONS_ENABLED}
+      SLACK_NOTIFICATIONS_URL: ${SLACK_NOTIFICATIONS_URL}
+    command: ./realtime_download.sh
+
+  gdelt_realtime_logstash:
+    build:
+      context: .
+      args:
+        ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
+      dockerfile: Dockerfile.realtime_logstash
+    image: sofwerx/gdelt_realtime_logstash:${ELASTICSEARCH_VERSION}
+    container_name: gdelt_realtime_logstash
+    hostname: gdelt_realtime_logstash
+    environment:
+      GDELT_REALTIME_FILE_PATH: ${GDELT_REALTIME_FILE_PATH}
+      GDELT_REALTIME_GKG_FILE_PATH: ${GDELT_REALTIME_GKG_FILE_PATH}
+      GDELT_REALTIME_MENTIONS_FILE_PATH: ${GDELT_REALTIME_MENTIONS_FILE_PATH}
+      ES_HOST: ${ES_HOST}
+      ES_USER: ${ES_USER}
+      ES_PASSWORD: ${ES_PASSWORD}
+      ES_GDELT_INDEX: ${ES_GDELT_INDEX}
 

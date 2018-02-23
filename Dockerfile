@@ -6,3 +6,6 @@ ADD . /es-gdelt
 
 WORKDIR /es-gdelt
 
+VOLUME /es-gdelt/data
+
+CMD ./realtime_download.sh

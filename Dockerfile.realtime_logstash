@@ -1,0 +1,4 @@
+ARG ELASTICSEARCH_VERSION
+FROM docker.elastic.co/logstash/logstash:${ELASTICSEARCH_VERSION}
+
+ADD logstash/ls-gdelt.conf /usr/share/logstash/pipeline/logstash.conf

@@ -1,0 +1,3 @@
+[submodule "docker-elastic"]
+	path = docker-elastic
+	url = https://github.com/sofwerx/docker-elastic

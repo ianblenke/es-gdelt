@@ -3,12 +3,12 @@ import os
 
 from requests.auth import HTTPBasicAuth
 
-ES_HOST = os.environ.get("ES_HOST")
+ES_HOST_URL = os.environ.get("ES_HOST_URL")
 ES_USER = os.environ.get("ES_USER")
 ES_PASSWORD = os.environ.get("ES_PASSWORD")
 ES_GDELT_INDEX = os.environ.get("ES_GDELT_INDEX")
 ES_DELETE_INDEX = os.environ.get("ES_DELETE_INDEX")
-URL = ES_HOST + ES_GDELT_INDEX
+URL = ES_HOST_URL + ES_GDELT_INDEX
 
 def create_indice(delete=None):
 
