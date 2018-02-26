@@ -24,8 +24,8 @@ services:
       context: .
       dockerfile: Dockerfile
     image: sofwerx/es-gdelt
-    container_name: gdelt_create_downloaer
-    hostname: gdelt_create_downloader
+    container_name: gdelt_realtime_downloader
+    hostname: gdelt_realtime_downloader
     volumes:
       - gdelt-data:/es-gdelt/data
     environment:

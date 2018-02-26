@@ -166,7 +166,7 @@
                     "type": "double"
                 },
                 "IsRootEvent": {
-                    "type": "boolean"
+                    "type": "integer"
                 },
                 "MonthYear": {
                     "type": "date",

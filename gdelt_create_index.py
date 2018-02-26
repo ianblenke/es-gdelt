@@ -13,9 +13,12 @@ URL = ES_HOST_URL + ES_GDELT_INDEX
 def create_indice(delete=None):
 
     if delete:
-        requests.delete(URL + "-events", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
-        requests.delete(URL + "-gkg", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
-        requests.delete(URL + "-mentions", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
+        res = requests.delete(URL + "-events", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
+        print res.content
+        res = requests.delete(URL + "-gkg", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
+        print res.content
+        res = requests.delete(URL + "-mentions", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
+        print res.content
 
     template = open("elasticsearch/gdelt-events-template.json").read()
     res = requests.put(URL + "-events", data=template, auth=HTTPBasicAuth(ES_USER, ES_PASSWORD), headers={'Content-type': 'application/json'})
