@@ -19,6 +19,8 @@ def create_indice(delete=None):
         print res.content
         res = requests.delete(URL + "-mentions", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
         print res.content
+        res = requests.delete(URL + "-historic", auth=HTTPBasicAuth(ES_USER, ES_PASSWORD))
+        print res.content
 
     template = open("elasticsearch/gdelt-events-template.json").read()
     res = requests.put(URL + "-events", data=template, auth=HTTPBasicAuth(ES_USER, ES_PASSWORD), headers={'Content-type': 'application/json'})
@@ -30,6 +32,10 @@ def create_indice(delete=None):
 
     template = open("elasticsearch/gdelt-mentions-template.json").read()
     res = requests.put(URL + "-mentions", data=template, auth=HTTPBasicAuth(ES_USER, ES_PASSWORD), headers={'Content-type': 'application/json'})
+    print res.content
+
+    template = open("elasticsearch/gdelt-historic-template.json").read()
+    res = requests.put(URL + "-historic", data=template, auth=HTTPBasicAuth(ES_USER, ES_PASSWORD), headers={'Content-type': 'application/json'})
     print res.content
 
 if __name__ == "__main__":

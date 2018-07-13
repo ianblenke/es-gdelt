@@ -8,7 +8,6 @@ BASE_PATH = os.path.dirname(os.path.abspath(__file__))
 DOWNLOAD_PATH = os.path.join(BASE_PATH, "")
 ZIP_EXTRACT_PATH = os.path.join(BASE_PATH, "data", "realtime")
 
-
 def slack(message):
     """
     Notify activities to slack channels.
@@ -23,7 +22,6 @@ def slack(message):
             "icon_emoji": ":google:"
         }
         requests.post(os.environ.get("SLACK_NOTIFICATIONS_URL"), json=data)
-
 
 def download_file(url):
     """

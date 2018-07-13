@@ -29,7 +29,6 @@ services:
     volumes:
       - gdelt-data:/es-gdelt/data
     environment:
-      GDELT_HISTORIC_FILE_PATH: ${GDELT_HISTORIC_FILE_PATH}
       GDELT_REALTIME_FILE_PATH: ${GDELT_REALTIME_FILE_PATH}
       GDELT_REALTIME_GKG_FILE_PATH: ${GDELT_REALTIME_GKG_FILE_PATH}
       GDELT_REALTIME_MENTIONS_FILE_PATH: ${GDELT_REALTIME_MENTIONS_FILE_PATH}
@@ -54,4 +53,36 @@ services:
       ES_USER: ${ES_USER}
       ES_PASSWORD: ${ES_PASSWORD}
       ES_GDELT_INDEX: ${ES_GDELT_INDEX}
+
+  gdelt_historic_downloader:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sofwerx/es-gdelt
+    container_name: gdelt_historic_downloader
+    hostname: gdelt_historic_downloader
+    volumes:
+      - gdelt-data:/es-gdelt/data
+    environment:
+      GDELT_HISTORIC_FILE_PATH: ${GDELT_HISTORIC_FILE_PATH}
+      SLACK_NOTIFICATIONS_ENABLED: ${SLACK_NOTIFICATIONS_ENABLED}
+      SLACK_NOTIFICATIONS_URL: ${SLACK_NOTIFICATIONS_URL}
+    command: ./historic_download.sh
+
+  gdelt_historic_logstash:
+    build:
+      context: .
+      args:
+        ELASTICSEARCH_VERSION: ${ELASTICSEARCH_VERSION}
+      dockerfile: Dockerfile.historic_logstash
+    image: sofwerx/gdelt_historic_logstash:${ELASTICSEARCH_VERSION}
+    container_name: gdelt_historic_logstash
+    hostname: gdelt_historic_logstash
+    environment:
+      GDELT_HISTORIC_FILE_PATH: ${GDELT_HISTORIC_FILE_PATH}
+      ES_HOST: ${ES_HOST}
+      ES_USER: ${ES_USER}
+      ES_PASSWORD: ${ES_PASSWORD}
+      ES_GDELT_INDEX: ${ES_GDELT_INDEX}
+
 
